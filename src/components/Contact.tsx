@@ -1,8 +1,15 @@
-import { useState, type FormEvent } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Phone, Linkedin, Send, CheckCircle2, AlertCircle } from 'lucide-react';
-import { personalInfo } from '@/data/portfolio';
-import SectionHeading from './SectionHeading';
+import { useState, type FormEvent } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Mail,
+  Phone,
+  Linkedin,
+  Send,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
+import { personalInfo } from "@/data/portfolio";
+import SectionHeading from "./SectionHeading";
 
 interface FormErrors {
   name?: string;
@@ -10,25 +17,25 @@ interface FormErrors {
   message?: string;
 }
 
-type Status = 'idle' | 'success' | 'error';
+type Status = "idle" | "success" | "error";
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [errors, setErrors] = useState<FormErrors>({});
-  const [status, setStatus] = useState<Status>('idle');
+  const [status, setStatus] = useState<Status>("idle");
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
-    if (!form.name.trim()) newErrors.name = 'Name is required';
+    if (!form.name.trim()) newErrors.name = "Name is required";
     if (!form.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = "Please enter a valid email address";
     }
     if (!form.message.trim()) {
-      newErrors.message = 'Message is required';
+      newErrors.message = "Message is required";
     } else if (form.message.trim().length < 10) {
-      newErrors.message = 'Message should be at least 10 characters';
+      newErrors.message = "Message should be at least 10 characters";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -40,30 +47,32 @@ export default function Contact() {
 
     // No backend configured — use mailto fallback
     const subject = encodeURIComponent(`Portfolio Contact: ${form.name}`);
-    const body = encodeURIComponent(`${form.message}\n\nFrom: ${form.name} (${form.email})`);
+    const body = encodeURIComponent(
+      `${form.message}\n\nFrom: ${form.name} (${form.email})`,
+    );
     window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
 
-    setStatus('success');
-    setForm({ name: '', email: '', message: '' });
-    setTimeout(() => setStatus('idle'), 5000);
+    setStatus("success");
+    setForm({ name: "", email: "", message: "" });
+    setTimeout(() => setStatus("idle"), 5000);
   };
 
   const contactCards = [
     {
       icon: Mail,
-      label: 'Email',
+      label: "Email",
       value: personalInfo.email,
       href: `mailto:${personalInfo.email}`,
     },
     {
       icon: Phone,
-      label: 'Phone',
+      label: "Phone",
       value: personalInfo.phone,
-      href: `tel:${personalInfo.phone.replace(/\s/g, '')}`,
+      href: `tel:${personalInfo.phone.replace(/\s/g, "")}`,
     },
     {
       icon: Linkedin,
-      label: 'LinkedIn',
+      label: "LinkedIn",
       value: personalInfo.linkedinDisplay,
       href: personalInfo.linkedin,
     },
@@ -82,7 +91,8 @@ export default function Contact() {
           label="08 — Contact"
           title={
             <>
-              Let's build something <span className="text-gradient-cyan-indigo">useful.</span>
+              Let's build something{" "}
+              <span className="text-gradient-cyan-indigo">useful.</span>
             </>
           }
           subtitle="Have a project, opportunity, or idea? I'd love to connect."
@@ -93,7 +103,7 @@ export default function Contact() {
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6 }}
             className="lg:col-span-2 space-y-4"
           >
@@ -101,8 +111,10 @@ export default function Contact() {
               <motion.a
                 key={card.label}
                 href={card.href}
-                target={card.label === 'LinkedIn' ? '_blank' : undefined}
-                rel={card.label === 'LinkedIn' ? 'noopener noreferrer' : undefined}
+                target={card.label === "LinkedIn" ? "_blank" : undefined}
+                rel={
+                  card.label === "LinkedIn" ? "noopener noreferrer" : undefined
+                }
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -126,7 +138,10 @@ export default function Contact() {
 
             <div className="p-5 rounded-2xl bg-palette-electric/5 border border-palette-cyan/10">
               <p className="text-sm text-gray-400 dark:text-gray-400 light:text-gray-600">
-                Based in <span className="text-palette-cyan font-medium">{personalInfo.location}</span>
+                Based in{" "}
+                <span className="text-palette-cyan font-medium">
+                  {personalInfo.location}
+                </span>
               </p>
             </div>
           </motion.div>
@@ -135,7 +150,7 @@ export default function Contact() {
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-50px' }}
+            viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6 }}
             className="lg:col-span-3"
           >
@@ -144,7 +159,10 @@ export default function Contact() {
               className="rounded-2xl p-6 lg:p-8 card-dark light:card-light gradient-border space-y-5"
             >
               <div>
-                <label htmlFor="name" className="block text-sm font-medium mb-2">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium mb-2"
+                >
                   Name
                 </label>
                 <input
@@ -153,7 +171,7 @@ export default function Contact() {
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
                   className={`w-full px-4 py-3 rounded-xl bg-palette-nearblack/40 light:bg-white/60 border ${
-                    errors.name ? 'border-red-400/50' : 'border-palette-cyan/15'
+                    errors.name ? "border-red-400/50" : "border-palette-cyan/15"
                   } focus:border-palette-cyan/50 focus:outline-none focus:ring-2 focus:ring-palette-cyan/20 text-sm transition-all`}
                   placeholder="Your name"
                 />
@@ -166,7 +184,10 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium mb-2"
+                >
                   Email
                 </label>
                 <input
@@ -175,7 +196,9 @@ export default function Contact() {
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   className={`w-full px-4 py-3 rounded-xl bg-palette-nearblack/40 light:bg-white/60 border ${
-                    errors.email ? 'border-red-400/50' : 'border-palette-cyan/15'
+                    errors.email
+                      ? "border-red-400/50"
+                      : "border-palette-cyan/15"
                   } focus:border-palette-cyan/50 focus:outline-none focus:ring-2 focus:ring-palette-cyan/20 text-sm transition-all`}
                   placeholder="your.email@example.com"
                 />
@@ -188,16 +211,23 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium mb-2"
+                >
                   Message
                 </label>
                 <textarea
                   id="message"
                   rows={4}
                   value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  onChange={(e) =>
+                    setForm({ ...form, message: e.target.value })
+                  }
                   className={`w-full px-4 py-3 rounded-xl bg-palette-nearblack/40 light:bg-white/60 border ${
-                    errors.message ? 'border-red-400/50' : 'border-palette-cyan/15'
+                    errors.message
+                      ? "border-red-400/50"
+                      : "border-palette-cyan/15"
                   } focus:border-palette-cyan/50 focus:outline-none focus:ring-2 focus:ring-palette-cyan/20 text-sm transition-all resize-none`}
                   placeholder="Tell me about your project or opportunity..."
                 />
@@ -218,11 +248,12 @@ export default function Contact() {
               </button>
 
               <p className="text-xs text-center text-gray-500">
-                Opens your email client — no messages are sent from this form directly.
+                Opens your email client - no messages are sent from this form
+                directly.
               </p>
 
               <AnimatePresence>
-                {status === 'success' && (
+                {status === "success" && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
